@@ -38,21 +38,29 @@ export default function signup() {
   };
 
     const createProfileClick = async () => {
-    //    let {error} =  await supabase.from('Profiles').insert(
-    //     {'email': {email},
-    //     'Firstname': {Firstname}, 
-    //     'Lastname': {Lastname}, 
-    //     'Grade' : {Grade},
-    //     'Class' : {Class},
-    //     'GPA' : {GPA}
-    //     })
 
-        const { data, error } = await supabase.from('Profiles')
-        .select('*')
-        .eq('email', user.email);
-        console.log(data);
+
+        try {
+            console.log({email})
+            const {error} =  await supabase.from('Profiles').insert(
+                {   
+                'email': email,
+                'Firstname': Firstname, 
+                'Lastname': Lastname, 
+                'Grade' : Grade,
+                'Class' : Class,
+                'GPA' : GPA
+                });
+            if (error){
+                        throw error;
+                    }
+    // Handle success here
+  } catch (error) {
+    // Handle error here
+    console.error(error);
+  }  
     }
-
+    
   return (
     <div>
       <input type="text" placeholder="email" value={email} onChange={onEmailChange} />

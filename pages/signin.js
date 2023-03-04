@@ -32,12 +32,12 @@ export default function signin() {
       }
 
       const getProfile = async () => {
-            console.log(user.email)
-            const { data, error } = await supabase.from('Profiles')
-            .select('*')
-            .eq('email', user.email);
-            console.log(data);
-            console.log(error);
+                console.log(user.email)
+                const { data, error } = await supabase.from('Profiles')
+                .select('*')
+                .eq('email', user.email);
+                console.log(data);
+                console.log(error);
         }
 
   return (
