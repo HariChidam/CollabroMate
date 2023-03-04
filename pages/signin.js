@@ -2,6 +2,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
+import Profile from '../components/FindProfile'
 
 export default function signin() {
 
@@ -31,23 +32,20 @@ export default function signin() {
 
       }
 
-      const getProfile = async () => {
-                console.log(user.email)
-                const { data, error } = await supabase.from('Profiles')
-                .select('*')
-                .eq('email', user.email);
-                console.log(data);
-                console.log(error);
-        }
-
   return (
-    <div>
-        <button onClick={handleGoogleSignIn}>Sign in with Google</button>
-        <button onClick={handleSignOut}>Sign Out</button>
+
+    <div class="space-y-10">
+      <div class= "flex flex-col justify-center items-center text-center">
+        <h1 class="text-4xl font-bold">Class Group Finder</h1>
+      </div>
+      <div class= "flex flex-col justify-center items-center text-center space-y-8">
+        <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-1/3' onClick={handleGoogleSignIn}>Sign in</button>
+        <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-1/3' onClick={handleSignOut}>Sign Out</button>
 
         {
-            user ? (<button onClick = {getProfile}> get Profile</button> ) : (<div>Not signed in</div>)
+            user ? (<Profile user={user} ></Profile> ) : (<div>Not signed in</div>)
         }
+      </div>
 
     </div>
   )
