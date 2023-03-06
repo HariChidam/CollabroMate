@@ -29,7 +29,8 @@ export default function signin() {
   
       async function handleSignOut() {
           const { error } = await supabase.auth.signOut()
-
+          
+          window.location.href = '/signin';
       }
 
   return (
@@ -39,11 +40,18 @@ export default function signin() {
         <h1 class="text-4xl font-bold">Class Group Finder</h1>
       </div>
       <div class= "flex flex-col justify-center items-center text-center space-y-8">
-        <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-1/3' onClick={handleGoogleSignIn}>Sign in</button>
-        <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-1/3' onClick={handleSignOut}>Sign Out</button>
 
         {
-            user ? (<Profile user={user} ></Profile> ) : (<div>Not signed in</div>)
+            user ? (
+            <>
+              <Profile user={user} ></Profile> 
+              <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-1/3' onClick={handleSignOut}>Sign Out</button>
+            </>
+            ) 
+            : 
+            ( 
+              <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-1/3' onClick={handleGoogleSignIn}>Sign in</button>
+            )
         }
       </div>
 
