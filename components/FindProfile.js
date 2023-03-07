@@ -11,12 +11,24 @@ export default function FindProfile({user}) {
     const [Grade, setGrade] = useState('');
     const [Class, setClass] = useState('');
     const [GPA, setGPA] = useState('');
+    const [avatarUrl, setAvatarUrl] = useState(''); 
 
     useEffect(() => {
         const getProfile = async () => {
             const { data, error } = await supabase.from('Profiles')
             .select('*')
             .eq('email', user.email);
+
+            console.log(data)
+
+            const { data: blob, error: downloadError } = await supabase.storage.from('profiles').download(user.id)
+
+            console.log(blob)
+
+            const url = URL.createObjectURL(blob)
+            setAvatarUrl(url)
+
+            console.log(url)
             
             setEmail(data[0].email);
             setFirstname(data[0].Firstname);
@@ -27,11 +39,22 @@ export default function FindProfile({user}) {
             console.log(error);
         }
         getProfile();
-    },[supabase, user.email])
+    },[supabase, user.email, user.id])
 
   return (
     <div>
-        <Profile email={email} Firstname={Firstname} Lastname={Lastname} Grade={Grade} Class={Class} GPA={GPA}/>
+
+        {
+          avatarUrl ?
+
+          (
+            <Profile email={email} Firstname={Firstname} Lastname={Lastname} Grade={Grade} Class={Class} GPA={GPA} Url={avatarUrl}/>
+          )
+          :
+          (
+            <Profile email={email} Firstname={Firstname} Lastname={Lastname} Grade={Grade} Class={Class} GPA={GPA}/>
+          )
+        }
     </div>
   )
 }

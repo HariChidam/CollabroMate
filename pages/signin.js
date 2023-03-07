@@ -2,7 +2,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
-import Profile from '../components/FindProfile'
+import FindProfile from '../components/FindProfile'
 
 export default function signin() {
 
@@ -44,7 +44,7 @@ export default function signin() {
         {
             user ? (
             <>
-              <Profile user={user} ></Profile> 
+              <FindProfile user={user} ></FindProfile> 
               <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-1/3' onClick={handleSignOut}>Sign Out</button>
             </>
             ) 

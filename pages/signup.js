@@ -12,6 +12,7 @@ export default function signup() {
   const [Class, setClass] = useState('');
   const [GPA, setGPA] = useState('');
   const [avatar, setAvatar] = useState('');
+  const [avatarImg, setAvatarImg] = useState('');
   const [user, setUser] = useState(null);
 
  
@@ -59,11 +60,13 @@ export default function signup() {
   const onFileChange = (event) => {
     // get the selected file
     const selectedFile = event.target.files[0];
+
+    setAvatar(selectedFile);
     // create a FileReader object to read the file
     const reader = new FileReader();
-    // set a callback function to run when reading is complete
+
     reader.onloadend = () => {
-      setAvatar(reader.result);
+      setAvatarImg(reader.result);
     };
     // read the file as a data URL
     reader.readAsDataURL(selectedFile);
@@ -71,7 +74,7 @@ export default function signup() {
 
     const createProfileClick = async () => {
       
-      const {error} =  await supabase.from('Profiles').insert(
+      const {error: ProfileError} =  await supabase.from('Profiles').insert(
           {   
           'email': email,
           'Firstname': Firstname, 
@@ -81,21 +84,14 @@ export default function signup() {
           'GPA' : GPA
           });
 
-      const { error1 } = await supabase.storage
-      .from("profiles")
-      .upload(
-        user.id,
-        avatar,
-        {
-          contentType: avatar.type,
-          cacheControl: "3600",
-          upsert: true,
-        }
-      );
+      const { data: avatarData, error: AvatarError } = await supabase.storage
+      .from('profiles')
+      .upload(user.id, avatar);
 
-      if (!error && !error1) {
-        window.location.href = '/signin';
-      }
+      console.log(avatarData)
+      console.log(AvatarError)
+
+      window.location.href = '/signin';
     }
 
   return (
@@ -195,7 +191,7 @@ export default function signup() {
                   type="file" 
                   id="image" 
                   onChange={onFileChange} />
-                {avatar && <img src={avatar} alt="uploaded" />}
+                {avatarImg && <img className='h-20 w-20 object-contain' src={avatarImg} alt="uploaded" />}
               </div>
               <div className="flex items-center justify-center">
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={createProfileClick}>
