@@ -11,6 +11,7 @@ export default function signup() {
   const [Grade, setGrade] = useState('');
   const [Class, setClass] = useState('');
   const [GPA, setGPA] = useState('');
+  const [Bio, setBio] = useState('');
   const [avatar, setAvatar] = useState('');
   const [avatarImg, setAvatarImg] = useState('');
   const [user, setUser] = useState(null);
@@ -57,6 +58,10 @@ export default function signup() {
     setGPA(e.target.value);
   };
 
+  const onBioChange = (e) => {
+    setBio(e.target.value);
+  };
+
   const onFileChange = (event) => {
     // get the selected file
     const selectedFile = event.target.files[0];
@@ -81,7 +86,8 @@ export default function signup() {
           'Lastname': Lastname, 
           'Grade' : Grade,
           'Class' : Class,
-          'GPA' : GPA
+          'GPA' : GPA,
+          'Bio' : Bio,
           });
 
       const { data: avatarData, error: AvatarError } = await supabase.storage
@@ -182,6 +188,19 @@ export default function signup() {
                   placeholder="GPA"
                   value={GPA}
                   onChange={onGPAChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2" htmlFor="class">
+                  Bio
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="bio"
+                  type="text"
+                  placeholder="Bio"
+                  value={Bio}
+                  onChange={onBioChange}
                 />
               </div>
               <div className="mb-6">

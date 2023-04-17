@@ -37,7 +37,7 @@ export default function signin() {
 
     <div class="space-y-10">
       <div class= "flex flex-col justify-center items-center text-center">
-        <h1 class="text-4xl font-bold">Class Group Finder</h1>
+        <h1 class="text-4xl font-bold">CollabroMate</h1>
       </div>
       <div class= "flex flex-col justify-center items-center text-center space-y-8">
 
