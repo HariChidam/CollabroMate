@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import Profile from './Profile';
 import Link from 'next/link';
+import Hari from '../public/Hari.JPG'
+import userIcon from '../public/user.svg'
 
 export default function FindProfile({ user }) {
   const supabase = useSupabaseClient();
   const [avatarUrl, setAvatarUrl] = useState('');
   const [profiles, setProfiles] = useState([]);
   const [userProfile, setUserProfile] = useState({});
+  const [selectedClass, setSelectedClass] = useState('');
 
   useEffect(() => {
     const getProfiles = async () => {
@@ -26,7 +29,13 @@ export default function FindProfile({ user }) {
     };
 
     getProfiles();
-  }, [supabase, user.email]);
+  }, [supabase, user.email, user.id]);
+
+  const handleSelectClass = event => {
+    setSelectedClass(event.target.value);
+  };
+
+  const filteredProfiles = selectedClass ? profiles.filter(profile => profile.Class === selectedClass) : profiles;
 
   return (
     <div>
@@ -41,13 +50,24 @@ export default function FindProfile({ user }) {
             Grade={userProfile.Grade}
             Class={userProfile.Class}
             GPA={userProfile.GPA}
+            Bio={userProfile.Bio}
+            Url={Hari}
           />
       </div>
     </div>
       <div>
         <h1 className="text-2xl font-bold my-4">Students</h1>
+        <div className="flex flex-row items-center justify-center space-x-4 mb-4">
+          <label htmlFor="class-select">Filter by class:</label>
+          <select id="class-select" value={selectedClass} onChange={handleSelectClass}>
+            <option value="">All</option>
+            <option value="EECS 497">EECS 497</option>
+            <option value="EECS 388">EECS 388</option>
+            <option value="EECS 390">EECS 390</option>
+          </select>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {profiles.map(profile => (
+          {filteredProfiles.map(profile => (
             <Profile
               key={profile.id}
               email={profile.email}
@@ -56,6 +76,8 @@ export default function FindProfile({ user }) {
               Grade={profile.Grade}
               Class={profile.Class}
               GPA={profile.GPA}
+              Bio={profile.Bio}
+              Url={userIcon}
             />
           ))}
         </div>
